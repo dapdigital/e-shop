@@ -10,13 +10,16 @@ class Usuario(db.Model):
     password = db.Column(db.String(256), nullable=False)
     rol = db.Column(db.Enum('cliente', 'admin'), default='cliente')
     activo = db.Column(db.Boolean, default=True)
-    creado_en = db.Colmn(db.DateTime, default=datetime.now())
+    creado_en = db.Column(db.DateTime, default=datetime.now())
+
+    #Relacion: un usuario tiene muchos pedidos
+    pedidos = db.relationship('Pedido',backref='cliente', lazy=True)
 
     #-- Metodos de contrasena
     def set_password(self, password_plano):
         """ Hash a la contrasena en texto plano """
         self.password = generate_password_hash(password_plano)
-        
+
     def check_password(self, passwd):
         """Compara el texto plano con la contrasena hash """
         return check_password_hash(passwd)
