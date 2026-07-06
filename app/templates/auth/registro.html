@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Iniciar sesión{% endblock %}
+{% block title %}Crear cuenta{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -8,10 +8,18 @@
     <div class="card shadow-sm">
       <div class="card-body p-4">
 
-        <h3 class="card-title text-center mb-4">Iniciar sesión</h3>
+        <h3 class="card-title text-center mb-4">Crear cuenta</h3>
 
         <form method="POST">
-          {{ form.hidden_tag() }}
+          {{ form.hidden_tag() }}  {# token CSRF, obligatorio #}
+
+          <div class="mb-3">
+            {{ form.nombre.label(class='form-label') }}
+            {{ form.nombre(class='form-control') }}
+            {% for error in form.nombre.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+          </div>
 
           <div class="mb-3">
             {{ form.email.label(class='form-label') }}
@@ -29,9 +37,12 @@
             {% endfor %}
           </div>
 
-          <div class="mb-3 form-check">
-            {{ form.remember(class='form-check-input') }}
-            {{ form.remember.label(class='form-check-label') }}
+          <div class="mb-3">
+            {{ form.confirm.label(class='form-label') }}
+            {{ form.confirm(class='form-control') }}
+            {% for error in form.confirm.errors %}
+              <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
           </div>
 
           <div class="d-grid">
@@ -40,8 +51,8 @@
         </form>
 
         <p class="text-center mt-3 mb-0">
-          ¿No tienes cuenta?
-          <a href="{{ url_for('auth.registro') }}">Regístrate</a>
+          ¿Ya tienes cuenta?
+          <a href="{{ url_for('auth.login') }}">Inicia sesión</a>
         </p>
 
       </div>
