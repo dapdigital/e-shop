@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<h1>{{ titulo }}</h1>
+
+<form method="POST" class="mt-3" style="max-width: 500px;">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+        {{ form.nombre.label(class="form-label") }}
+        {{ form.nombre(class="form-control") }}
+        {% for error in form.nombre.errors %}
+            <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.descripcion.label(class="form-label") }}
+        {{ form.descripcion(class="form-control") }}
+    </div>
+
+    <div class="form-check mb-3">
+        {{ form.activa(class="form-check-input") }}
+        {{ form.activa.label(class="form-check-label") }}
+    </div>
+
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('admin.listar_categorias') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

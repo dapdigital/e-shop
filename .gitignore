@@ -1,3 +1,6 @@
-“vnev/”
-“.env/”
-__pycache__
+.venv/
+.env
+.env.save
+__pycache__/
+*.pyc
+instance/
