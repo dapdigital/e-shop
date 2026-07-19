@@ -3,7 +3,7 @@ from . import admin_bp
 from flask_login import login_required
 from .decorators import admin_requerido
 from app import db
-from app.models import Categoria
+from app.models import Categoria, Usuario, Pedido
 from .forms import FormCategoria
 
 
@@ -19,15 +19,7 @@ def productos():
     return render_template('admin/productos.html')
 
 
-@admin_bp.route('/admin/clientes')
-def clientes():
-    return render_template('admin/clientes.html')
-
-
-@admin_bp.route('/admin/pedidos')
-def pedidos():
-    return render_template('admin/pedidos.html')
-
+# ==================== CATEGORÍAS ====================
 
 @admin_bp.route('/categorias')
 @login_required
@@ -84,3 +76,54 @@ def eliminar_categoria(id):
     db.session.commit()
     flash('Categoría desactivada.', 'warning')
     return redirect(url_for('admin.listar_categorias'))
+
+
+# ==================== CLIENTES ====================
+
+@admin_bp.route('/gestion-clientes')
+@login_required
+@admin_requerido
+def gestion_clientes():
+    clientes = Usuario.query.filter_by(rol='cliente').order_by(Usuario.nombre).all()
+    return render_template('admin/clientes/listar.html', clientes=clientes)
+
+
+@admin_bp.route('/gestion-clientes/toggle/<int:id>', methods=['POST'])
+@login_required
+@admin_requerido
+def toggle_cliente(id):
+    cliente = Usuario.query.get_or_404(id)
+    cliente.activo = not cliente.activo
+    db.session.commit()
+    estado = 'activado' if cliente.activo else 'desactivado'
+    flash(f'Cliente {estado} correctamente.', 'success')
+    return redirect(url_for('admin.gestion_clientes'))
+
+
+# ==================== PEDIDOS ====================
+
+@admin_bp.route('/gestion-pedidos')
+@login_required
+@admin_requerido
+def gestion_pedidos():
+    pedidos = Pedido.query.order_by(Pedido.fecha.desc()).all()
+    return render_template('admin/pedidos/listar.html', pedidos=pedidos)
+
+
+@admin_bp.route('/gestion-pedidos/estado/<int:id>', methods=['POST'])
+@login_required
+@admin_requerido
+def cambiar_estado_pedido(id):
+    pedido = Pedido.query.get_or_404(id)
+    orden_estados = ['pendiente', 'pagado', 'enviado', 'entregado']
+
+    if pedido.estado in orden_estados:
+        idx = orden_estados.index(pedido.estado)
+        if idx < len(orden_estados) - 1:
+            pedido.estado = orden_estados[idx + 1]
+            db.session.commit()
+            flash(f'Pedido actualizado a "{pedido.estado}".', 'success')
+        else:
+            flash('El pedido ya está en el último estado.', 'info')
+
+    return redirect(url_for('admin.gestion_pedidos'))
