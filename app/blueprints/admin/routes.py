@@ -1,10 +1,12 @@
-from flask import render_template, redirect, url_for, flash, request
+import os
+from werkzeug.utils import secure_filename
+from flask import render_template, redirect, url_for, flash, request, current_app
 from . import admin_bp
 from flask_login import login_required
 from .decorators import admin_requerido
 from app import db
-from app.models import Categoria, Usuario, Pedido
-from .forms import FormCategoria
+from app.models import Categoria, Usuario, Pedido, Producto
+from .forms import FormCategoria, FormProducto
 
 
 @admin_bp.route('/dashboard')
@@ -12,11 +14,6 @@ from .forms import FormCategoria
 @admin_requerido
 def dashboard():
     return render_template('admin/home.html')
-
-
-@admin_bp.route('/admin/productos')
-def productos():
-    return render_template('admin/productos.html')
 
 
 # ==================== CATEGORÍAS ====================
@@ -127,3 +124,86 @@ def cambiar_estado_pedido(id):
             flash('El pedido ya está en el último estado.', 'info')
 
     return redirect(url_for('admin.gestion_pedidos'))
+
+
+# ==================== PRODUCTOS ====================
+
+@admin_bp.route('/productos')
+@login_required
+@admin_requerido
+def productos():
+    lista = Producto.query.order_by(Producto.nombre).all()
+    return render_template('admin/productos/listar.html', productos=lista)
+
+
+@admin_bp.route('/productos/crear', methods=['GET', 'POST'])
+@login_required
+@admin_requerido
+def crear_producto():
+    form = FormProducto()
+    form.categoria_id.choices = [(c.id, c.nombre) for c in Categoria.query.filter_by(activa=True).all()]
+
+    if form.validate_on_submit():
+        nombre_archivo = None
+
+        if form.imagen.data:
+            archivo = form.imagen.data
+            nombre_archivo = secure_filename(archivo.filename)
+            ruta_guardado = os.path.join(current_app.root_path, 'static', 'img', nombre_archivo)
+            archivo.save(ruta_guardado)
+
+        nuevo = Producto(
+            nombre=form.nombre.data,
+            descripcion=form.descripcion.data,
+            precio=form.precio.data,
+            stock=form.stock.data,
+            categoria_id=form.categoria_id.data,
+            imagen=nombre_archivo,
+            activo=True
+        )
+        db.session.add(nuevo)
+        db.session.commit()
+        flash('Producto creado correctamente.', 'success')
+        return redirect(url_for('admin.productos'))
+
+    return render_template('admin/productos/formulario.html', form=form, titulo='Nuevo producto')
+
+
+@admin_bp.route('/productos/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_requerido
+def editar_producto(id):
+    producto = Producto.query.get_or_404(id)
+    form = FormProducto(obj=producto)
+    form.categoria_id.choices = [(c.id, c.nombre) for c in Categoria.query.filter_by(activa=True).all()]
+
+    if form.validate_on_submit():
+        if form.imagen.data:
+            archivo = form.imagen.data
+            nombre_archivo = secure_filename(archivo.filename)
+            ruta_guardado = os.path.join(current_app.root_path, 'static', 'img', nombre_archivo)
+            archivo.save(ruta_guardado)
+            producto.imagen = nombre_archivo
+
+        producto.nombre = form.nombre.data
+        producto.descripcion = form.descripcion.data
+        producto.precio = form.precio.data
+        producto.stock = form.stock.data
+        producto.categoria_id = form.categoria_id.data
+        producto.activo = form.activo.data
+        db.session.commit()
+        flash('Producto actualizado correctamente.', 'success')
+        return redirect(url_for('admin.productos'))
+
+    return render_template('admin/productos/formulario.html', form=form, titulo='Editar producto')
+
+
+@admin_bp.route('/productos/eliminar/<int:id>', methods=['POST'])
+@login_required
+@admin_requerido
+def eliminar_producto(id):
+    producto = Producto.query.get_or_404(id)
+    producto.activo = False
+    db.session.commit()
+    flash('Producto desactivado.', 'warning')
+    return redirect(url_for('admin.productos'))
