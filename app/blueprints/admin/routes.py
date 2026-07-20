@@ -13,7 +13,24 @@ from .forms import FormCategoria, FormProducto
 @login_required
 @admin_requerido
 def dashboard():
-    return render_template('admin/home.html')
+    total_ventas = db.session.query(db.func.sum(Pedido.total)).filter(
+        Pedido.estado.in_(['pagado', 'enviado', 'entregado'])
+    ).scalar() or 0
+
+    total_pedidos = Pedido.query.count()
+    pedidos_pendientes = Pedido.query.filter_by(estado='pendiente').count()
+
+    productos_bajo_stock = Producto.query.filter(
+        Producto.activo == True,
+        Producto.stock <= 5
+    ).order_by(Producto.stock.asc()).all()
+
+    return render_template('admin/home.html',
+        total_ventas=total_ventas,
+        total_pedidos=total_pedidos,
+        pedidos_pendientes=pedidos_pendientes,
+        productos_bajo_stock=productos_bajo_stock
+    )
 
 
 # ==================== CATEGORÍAS ====================

@@ -7,42 +7,92 @@
     <h1>Panel de Administración</h1>
     <p class="text-muted">Bienvenido, {{ current_user.nombre }}.</p>
 
+    <!-- Métricas -->
     <div class="row mt-4 g-3">
         <div class="col-md-4">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Ventas totales</h6>
+                    <h2>${{ '%.2f'|format(total_ventas) }}</h2>
+                    <small>Pedidos pagados, enviados o entregados</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Pedidos totales</h6>
+                    <h2>{{ total_pedidos }}</h2>
+                    <small>{{ pedidos_pendientes }} pendientes por procesar</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-warning h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Productos con bajo stock</h6>
+                    <h2>{{ productos_bajo_stock|length }}</h2>
+                    <small>Stock igual o menor a 5 unidades</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalle de productos con bajo stock -->
+    {% if productos_bajo_stock %}
+    <div class="mt-4">
+        <h5>⚠️ Productos que necesitan reposición</h5>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr><th>Producto</th><th>Stock actual</th></tr>
+            </thead>
+            <tbody>
+                {% for producto in productos_bajo_stock %}
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td><span class="badge bg-danger">{{ producto.stock }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Accesos directos -->
+    <div class="row mt-4 g-3">
+        <div class="col-md-3">
             <div class="card h-100 shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">📦 Categorías</h5>
-                    <p class="card-text text-muted">Crear, editar y desactivar categorías de productos.</p>
                     <a href="{{ url_for('admin.listar_categorias') }}" class="btn btn-primary">Gestionar</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card h-100 shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">🛍️ Productos</h5>
-                    <p class="card-text text-muted">Administrar el catálogo de productos.</p>
                     <a href="{{ url_for('admin.productos') }}" class="btn btn-primary">Gestionar</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card h-100 shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">👥 Clientes</h5>
-                    <p class="card-text text-muted">Ver y activar/desactivar cuentas de clientes.</p>
                     <a href="{{ url_for('admin.gestion_clientes') }}" class="btn btn-primary">Gestionar</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card h-100 shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title">📋 Pedidos</h5>
-                    <p class="card-text text-muted">Ver pedidos y actualizar su estado.</p>
                     <a href="{{ url_for('admin.gestion_pedidos') }}" class="btn btn-primary">Gestionar</a>
                 </div>
             </div>
