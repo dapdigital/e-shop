@@ -1,0 +1,272 @@
+/* ===================================================
+   ERROR2000 — Editorial Y2K (rosa/negro/blanco)
+   =================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;800&display=swap');
+
+:root {
+    --e2k-pink: #ff2f7e;
+    --e2k-black: #121212;
+    --e2k-cream: #fff8f2;
+    --e2k-white: #ffffff;
+    --e2k-text: #1a1a1a;
+    --e2k-gray: #6b6b6b;
+}
+
+body {
+    background-color: var(--e2k-cream);
+    color: var(--e2k-text);
+    font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--e2k-black);
+}
+
+/* --- Logo --- */
+.navbar-brand {
+    font-family: 'Anton', sans-serif;
+    color: var(--e2k-white) !important;
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+}
+
+/* --- Navbar: negro sólido, texto blanco --- */
+.navbar {
+    background-color: var(--e2k-black) !important;
+    border-bottom: 5px solid var(--e2k-pink);
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+}
+
+.navbar .nav-link {
+    color: var(--e2k-white) !important;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.navbar .nav-link:hover {
+    color: var(--e2k-pink) !important;
+}
+
+.dropdown-menu {
+    background-color: var(--e2k-black);
+    border: none;
+    border-radius: 0;
+}
+
+.dropdown-item {
+    color: var(--e2k-white);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--e2k-pink);
+    color: var(--e2k-black);
+}
+
+/* --- Hero: bloque negro con headline rosa gigante --- */
+.bg-dark {
+    background-color: var(--e2k-black) !important;
+    border: none;
+    border-radius: 0;
+    color: var(--e2k-white) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-dark h1 {
+    color: var(--e2k-pink) !important;
+    font-size: 4rem;
+    line-height: 0.95;
+    -webkit-text-stroke: 1px var(--e2k-white);
+}
+
+.bg-dark p {
+    color: var(--e2k-white) !important;
+    font-weight: 400;
+}
+
+/* --- Botones: bloques cuadrados, sin border-radius, bold --- */
+.btn {
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background-color: var(--e2k-pink);
+    border: 3px solid var(--e2k-black);
+    color: var(--e2k-black);
+}
+
+.btn-primary:hover {
+    background-color: var(--e2k-black);
+    border-color: var(--e2k-pink);
+    color: var(--e2k-pink);
+}
+
+.btn-success {
+    background-color: var(--e2k-black);
+    border: 3px solid var(--e2k-black);
+    color: var(--e2k-white);
+}
+
+.btn-success:hover {
+    background-color: var(--e2k-pink);
+    border-color: var(--e2k-pink);
+    color: var(--e2k-black);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 3px solid var(--e2k-black);
+    color: var(--e2k-black);
+}
+
+.btn-outline-secondary {
+    color: var(--e2k-black);
+    border: 3px solid var(--e2k-black);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--e2k-pink);
+    border-color: var(--e2k-pink);
+    color: var(--e2k-black);
+}
+
+.btn-outline-primary {
+    color: var(--e2k-pink);
+    border: 3px solid var(--e2k-pink);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--e2k-pink);
+    color: var(--e2k-black);
+}
+
+/* --- Tarjetas: blancas, bordes negros gruesos, esquinas rectas --- */
+.card {
+    background-color: var(--e2k-white);
+    border: 3px solid var(--e2k-black);
+    border-radius: 0;
+    color: var(--e2k-text);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--e2k-pink);
+}
+
+.card-title {
+    font-family: 'Anton', sans-serif;
+    color: var(--e2k-black);
+    font-size: 1.1rem;
+}
+
+/* --- Tablas --- */
+.table {
+    color: var(--e2k-text);
+}
+
+.table thead {
+    background-color: var(--e2k-black);
+    color: var(--e2k-white);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: #ffe9f2;
+}
+
+/* --- Badges --- */
+.badge {
+    border-radius: 0;
+    font-weight: 700;
+}
+
+.badge.bg-success {
+    background-color: var(--e2k-pink) !important;
+    color: var(--e2k-black) !important;
+}
+
+.badge.bg-secondary {
+    background-color: #d9d9d9 !important;
+    color: var(--e2k-black) !important;
+}
+
+/* --- Formularios --- */
+.form-control, .form-select {
+    background-color: var(--e2k-white);
+    border: 2px solid var(--e2k-black);
+    border-radius: 0;
+    color: var(--e2k-text);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--e2k-pink);
+    box-shadow: 0 0 0 0.2rem rgba(255, 47, 126, 0.25);
+}
+
+.form-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--e2k-gray);
+    letter-spacing: 0.05em;
+}
+
+/* --- Alertas --- */
+.alert {
+    border-radius: 0;
+    border: 2px solid var(--e2k-black);
+    border-left: 8px solid var(--e2k-pink);
+    background-color: var(--e2k-white);
+    color: var(--e2k-text);
+}
+
+/* --- Footer: negro sólido --- */
+footer.e2k-footer {
+    background-color: var(--e2k-black);
+    border-top: 5px solid var(--e2k-pink);
+    color: #b8b8b8;
+    font-size: 0.8rem;
+    padding: 2.5rem 0;
+    margin-top: 4rem;
+}
+
+footer.e2k-footer a {
+    color: var(--e2k-pink);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+footer.e2k-footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- Links --- */
+a { color: var(--e2k-pink); }
+a:hover { color: var(--e2k-black); }
+
+.text-muted {
+    color: var(--e2k-gray) !important;
+}
+
+.text-primary {
+    color: var(--e2k-pink) !important;
+    font-weight: 800;
+}

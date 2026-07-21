@@ -207,3 +207,7 @@ def mis_pedidos():
         usuario_id=current_user.id
     ).order_by(Pedido.fecha.desc()).all()
     return render_template('public/mis_pedidos.html', pedidos=pedidos)
+
+@public_bp.route('/acerca-de')
+def acerca_de():
+    return render_template('public/acerca_de.html')

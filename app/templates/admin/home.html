@@ -8,9 +8,39 @@
     <p class="text-muted">Bienvenido, {{ current_user.nombre }}.</p>
 
     <!-- Métricas -->
+     
     <div class="row mt-4 g-3">
         <div class="col-md-4">
-            <div class="card text-white bg-success h-100">
+            <div class="card h-100" style="border-left: 4px solid var(--e2k-lime);">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase" style="color: var(--e2k-gray); font-size: 0.8rem;">Ventas totales</h6>
+                    <h2 style="color: var(--e2k-lime);">${{ '%.2f'|format(total_ventas) }}</h2>
+                    <small class="text-muted">Pedidos pagados, enviados o entregados</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100" style="border-left: 4px solid var(--e2k-pink);">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase" style="color: var(--e2k-gray); font-size: 0.8rem;">Pedidos totales</h6>
+                    <h2 style="color: var(--e2k-pink);">{{ total_pedidos }}</h2>
+                    <small class="text-muted">{{ pedidos_pendientes }} pendientes por procesar</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100" style="border-left: 4px solid var(--e2k-purple);">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase" style="color: var(--e2k-gray); font-size: 0.8rem;">Productos con bajo stock</h6>
+                    <h2 style="color: var(--e2k-purple);">{{ productos_bajo_stock|length }}</h2>
+                    <small class="text-muted">Stock igual o menor a 5 unidades</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
                 <div class="card-body">
                     <h6 class="card-title">Ventas totales</h6>
                     <h2>${{ '%.2f'|format(total_ventas) }}</h2>
