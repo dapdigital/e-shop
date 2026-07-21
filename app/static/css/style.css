@@ -1,272 +1,429 @@
 /* ===================================================
-   ERROR2000 — Editorial Y2K (rosa/negro/blanco)
+   dissonance — streetwear / glitch echo
+   Paleta extraída del logo: hueso, tinta, rosa doble-exposición
    =================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-    --e2k-pink: #ff2f7e;
-    --e2k-black: #121212;
-    --e2k-cream: #fff8f2;
-    --e2k-white: #ffffff;
-    --e2k-text: #1a1a1a;
-    --e2k-gray: #6b6b6b;
+    /* --- tokens de marca --- */
+    --ds-bg: #f2f1ee;
+    --ds-surface: #ffffff;
+    --ds-ink: #262624;
+    --ds-ink-soft: #6f6f6c;
+    --ds-pink: #ed96c3;
+    --ds-pink-light: #f6d3e6;
+    --ds-pink-deep: #d9679f;
+    --ds-warn: #c9584f;
+    --ds-star: rgba(38, 38, 36, .28);
+
+    /* --- alias retrocompatibles (usados en templates existentes) --- */
+    --e2k-pink: var(--ds-pink);
+    --e2k-black: var(--ds-ink);
+    --e2k-cream: var(--ds-bg);
+    --e2k-white: var(--ds-surface);
+    --e2k-text: var(--ds-ink);
+    --e2k-gray: var(--ds-ink-soft);
+    --e2k-lime: var(--ds-pink-deep);
+    --e2k-purple: var(--ds-warn);
 }
 
 body {
-    background-color: var(--e2k-cream);
-    color: var(--e2k-text);
-    font-family: 'Poppins', sans-serif;
+    background-color: var(--ds-bg);
+    color: var(--ds-ink);
+    font-family: 'Inter', sans-serif;
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: 'Anton', sans-serif;
+    font-family: 'Archivo Black', sans-serif;
     font-weight: 400;
-    text-transform: uppercase;
+    color: var(--ds-ink);
     letter-spacing: 0.01em;
-    color: var(--e2k-black);
 }
 
-/* --- Logo --- */
+.text-uppercase, .form-label, .badge, .navbar .nav-link, .dropdown-item {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+/* --- Logo / marca --- */
 .navbar-brand {
-    font-family: 'Anton', sans-serif;
-    color: var(--e2k-white) !important;
-    font-size: 1.6rem;
-    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    padding: 0;
 }
 
-/* --- Navbar: negro sólido, texto blanco --- */
+.navbar-brand .brand-logo {
+    height: 30px;
+    width: auto;
+    display: block;
+}
+
+/* --- Navbar: hueso, tinta, línea fina --- */
 .navbar {
-    background-color: var(--e2k-black) !important;
-    border-bottom: 5px solid var(--e2k-pink);
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
+    background-color: var(--ds-bg) !important;
+    border-bottom: 2px solid var(--ds-ink);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .navbar .nav-link {
-    color: var(--e2k-white) !important;
-    font-weight: 600;
-    font-size: 0.8rem;
+    color: var(--ds-ink) !important;
+    font-weight: 700;
+    font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
+    position: relative;
+}
+
+.navbar .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 0;
+    height: 2px;
+    background-color: var(--ds-pink);
+    transition: width 0.18s ease;
 }
 
 .navbar .nav-link:hover {
-    color: var(--e2k-pink) !important;
+    color: var(--ds-ink) !important;
+}
+
+.navbar .nav-link:hover::after {
+    width: 100%;
+}
+
+.navbar .badge.bg-danger {
+    background-color: var(--ds-pink-deep) !important;
 }
 
 .dropdown-menu {
-    background-color: var(--e2k-black);
-    border: none;
-    border-radius: 0;
+    background-color: var(--ds-surface);
+    border: 2px solid var(--ds-ink);
+    border-radius: 10px;
+    padding: 0.4rem;
 }
 
 .dropdown-item {
-    color: var(--e2k-white);
-    font-weight: 600;
+    color: var(--ds-ink);
+    font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
+    border-radius: 6px;
 }
 
 .dropdown-item:hover {
-    background-color: var(--e2k-pink);
-    color: var(--e2k-black);
+    background-color: var(--ds-pink-light);
+    color: var(--ds-ink);
 }
 
-/* --- Hero: bloque negro con headline rosa gigante --- */
+/* --- Hero: bloque tinta con eco rosa (firma del logo) --- */
 .bg-dark {
-    background-color: var(--e2k-black) !important;
+    background-color: var(--ds-ink) !important;
     border: none;
-    border-radius: 0;
-    color: var(--e2k-white) !important;
+    border-radius: 18px !important;
+    color: var(--ds-bg) !important;
     position: relative;
     overflow: hidden;
 }
 
+.bg-dark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(rgba(242, 241, 238, .18) 1.5px, transparent 1.6px),
+        radial-gradient(rgba(242, 241, 238, .12) 1px, transparent 1.1px);
+    background-size: 130px 130px, 70px 70px;
+    background-position: 0 0, 40px 50px;
+    pointer-events: none;
+}
+
 .bg-dark h1 {
-    color: var(--e2k-pink) !important;
-    font-size: 4rem;
-    line-height: 0.95;
-    -webkit-text-stroke: 1px var(--e2k-white);
+    color: var(--ds-bg) !important;
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 3.4rem;
+    line-height: 1;
+    text-shadow: 3px 3px 0 var(--ds-pink);
+    position: relative;
+    z-index: 1;
 }
 
 .bg-dark p {
-    color: var(--e2k-white) !important;
-    font-weight: 400;
+    color: var(--ds-bg) !important;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    opacity: 0.85;
 }
 
-/* --- Botones: bloques cuadrados, sin border-radius, bold --- */
+@media (max-width: 576px) {
+    .bg-dark h1 {
+        font-size: 2.2rem;
+    }
+}
+
+/* --- Botones: píldora, con eco rosa al hover --- */
 .btn {
-    border-radius: 0;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 800;
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
+    padding: 0.55rem 1.3rem;
+    border-width: 2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
 .btn-primary {
-    background-color: var(--e2k-pink);
-    border: 3px solid var(--e2k-black);
-    color: var(--e2k-black);
+    background-color: var(--ds-ink);
+    border: 2px solid var(--ds-ink);
+    color: var(--ds-bg);
 }
 
 .btn-primary:hover {
-    background-color: var(--e2k-black);
-    border-color: var(--e2k-pink);
-    color: var(--e2k-pink);
+    background-color: var(--ds-ink);
+    border-color: var(--ds-ink);
+    color: var(--ds-pink-light);
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--ds-pink);
 }
 
 .btn-success {
-    background-color: var(--e2k-black);
-    border: 3px solid var(--e2k-black);
-    color: var(--e2k-white);
+    background-color: var(--ds-pink);
+    border: 2px solid var(--ds-ink);
+    color: var(--ds-ink);
 }
 
 .btn-success:hover {
-    background-color: var(--e2k-pink);
-    border-color: var(--e2k-pink);
-    color: var(--e2k-black);
+    background-color: var(--ds-ink);
+    border-color: var(--ds-ink);
+    color: var(--ds-pink);
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--ds-pink);
 }
 
-.btn-secondary {
-    background-color: transparent;
-    border: 3px solid var(--e2k-black);
-    color: var(--e2k-black);
-}
-
+.btn-secondary,
 .btn-outline-secondary {
-    color: var(--e2k-black);
-    border: 3px solid var(--e2k-black);
+    background-color: transparent;
+    border: 2px solid var(--ds-ink);
+    color: var(--ds-ink);
 }
 
 .btn-outline-secondary:hover {
-    background-color: var(--e2k-pink);
-    border-color: var(--e2k-pink);
-    color: var(--e2k-black);
+    background-color: var(--ds-ink);
+    border-color: var(--ds-ink);
+    color: var(--ds-bg);
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--ds-pink);
 }
 
 .btn-outline-primary {
-    color: var(--e2k-pink);
-    border: 3px solid var(--e2k-pink);
+    color: var(--ds-pink-deep);
+    border: 2px solid var(--ds-pink-deep);
 }
 
 .btn-outline-primary:hover {
-    background-color: var(--e2k-pink);
-    color: var(--e2k-black);
+    background-color: var(--ds-pink-deep);
+    color: var(--ds-bg);
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--ds-ink);
 }
 
-/* --- Tarjetas: blancas, bordes negros gruesos, esquinas rectas --- */
+.btn-danger {
+    background-color: var(--ds-warn);
+    border: 2px solid var(--ds-warn);
+    color: var(--ds-bg);
+    border-radius: 999px;
+}
+
+/* --- Input group (selector de cantidad): botones compactos, sin forma píldora --- */
+.input-group {
+    width: auto !important;
+    flex-wrap: nowrap;
+}
+
+.input-group .btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.9rem;
+    border-radius: 0 !important;
+    flex: 0 0 auto;
+}
+
+.input-group .form-control {
+    border-radius: 0 !important;
+    min-width: 3rem;
+    text-align: center;
+}
+
+.input-group > .btn:first-child {
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.input-group > .btn:last-child,
+.input-group > *:last-child.form-control {
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+/* --- Tarjetas: esquinas redondeadas, eco rosa al hover --- */
 .card {
-    background-color: var(--e2k-white);
-    border: 3px solid var(--e2k-black);
-    border-radius: 0;
-    color: var(--e2k-text);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    background-color: var(--ds-surface);
+    border: 1.5px solid var(--ds-ink);
+    border-radius: 16px;
+    color: var(--ds-ink);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    overflow: hidden;
 }
 
 .card:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--e2k-pink);
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0 var(--ds-pink);
+}
+
+.card-img-top {
+    border-bottom: 1.5px solid var(--ds-ink);
 }
 
 .card-title {
-    font-family: 'Anton', sans-serif;
-    color: var(--e2k-black);
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    color: var(--ds-ink);
     font-size: 1.1rem;
 }
 
 /* --- Tablas --- */
 .table {
-    color: var(--e2k-text);
+    color: var(--ds-ink);
 }
 
 .table thead {
-    background-color: var(--e2k-black);
-    color: var(--e2k-white);
+    background-color: var(--ds-ink);
+    color: var(--ds-bg);
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-    background-color: #ffe9f2;
+    background-color: var(--ds-pink-light);
+    --bs-table-accent-bg: transparent;
 }
 
 /* --- Badges --- */
 .badge {
-    border-radius: 0;
+    border-radius: 999px;
     font-weight: 700;
+    letter-spacing: 0.03em;
 }
 
 .badge.bg-success {
-    background-color: var(--e2k-pink) !important;
-    color: var(--e2k-black) !important;
+    background-color: var(--ds-pink) !important;
+    color: var(--ds-ink) !important;
 }
 
 .badge.bg-secondary {
-    background-color: #d9d9d9 !important;
-    color: var(--e2k-black) !important;
+    background-color: #e1e0dc !important;
+    color: var(--ds-ink) !important;
+}
+
+.badge.bg-warning {
+    background-color: var(--ds-pink-light) !important;
+    color: var(--ds-ink) !important;
+}
+
+.badge.bg-danger {
+    background-color: var(--ds-warn) !important;
+    color: var(--ds-bg) !important;
 }
 
 /* --- Formularios --- */
 .form-control, .form-select {
-    background-color: var(--e2k-white);
-    border: 2px solid var(--e2k-black);
-    border-radius: 0;
-    color: var(--e2k-text);
+    background-color: var(--ds-surface);
+    border: 1.5px solid var(--ds-ink);
+    border-radius: 10px;
+    color: var(--ds-ink);
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: var(--e2k-pink);
-    box-shadow: 0 0 0 0.2rem rgba(255, 47, 126, 0.25);
+    border-color: var(--ds-pink-deep);
+    box-shadow: 0 0 0 0.2rem rgba(217, 103, 159, 0.2);
 }
 
 .form-label {
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.75rem;
-    color: var(--e2k-gray);
-    letter-spacing: 0.05em;
+    font-size: 0.72rem;
+    color: var(--ds-ink-soft);
+    letter-spacing: 0.06em;
 }
 
 /* --- Alertas --- */
 .alert {
-    border-radius: 0;
-    border: 2px solid var(--e2k-black);
-    border-left: 8px solid var(--e2k-pink);
-    background-color: var(--e2k-white);
-    color: var(--e2k-text);
+    border-radius: 12px;
+    border: 1.5px solid var(--ds-ink);
+    border-left: 6px solid var(--ds-pink);
+    background-color: var(--ds-surface);
+    color: var(--ds-ink);
 }
 
-/* --- Footer: negro sólido --- */
+.alert-danger {
+    border-left-color: var(--ds-warn);
+}
+
+/* --- Footer: tinta con estrellas y borde rosa --- */
 footer.e2k-footer {
-    background-color: var(--e2k-black);
-    border-top: 5px solid var(--e2k-pink);
-    color: #b8b8b8;
-    font-size: 0.8rem;
+    background-color: var(--ds-ink);
+    border-top: 2px solid var(--ds-pink);
+    color: #b8b6b2;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
     padding: 2.5rem 0;
     margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+footer.e2k-footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(242, 241, 238, .15) 1.4px, transparent 1.5px);
+    background-size: 90px 90px;
+    pointer-events: none;
+}
+
+footer.e2k-footer .container {
+    position: relative;
+    z-index: 1;
 }
 
 footer.e2k-footer a {
-    color: var(--e2k-pink);
+    color: var(--ds-pink);
     font-weight: 700;
     text-decoration: none;
 }
 
 footer.e2k-footer a:hover {
+    color: var(--ds-pink-light);
     text-decoration: underline;
 }
 
 /* --- Links --- */
-a { color: var(--e2k-pink); }
-a:hover { color: var(--e2k-black); }
+a { color: var(--ds-pink-deep); }
+a:hover { color: var(--ds-ink); }
 
 .text-muted {
-    color: var(--e2k-gray) !important;
+    color: var(--ds-ink-soft) !important;
 }
 
 .text-primary {
-    color: var(--e2k-pink) !important;
+    color: var(--ds-pink-deep) !important;
     font-weight: 800;
 }

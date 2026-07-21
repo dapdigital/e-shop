@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}Inicio – e-Shop{% endblock %}
+{% block title %}Inicio – dissonance{% endblock %}
 
 {% block content %}
 <!-- Hero -->
 <div class="p-5 mb-4 bg-dark text-white rounded-3">
   <div class="container-fluid py-3">
-    <h1 class="display-5 fw-bold">Bienvenido a e-Shop</h1>
-    <p class="col-md-8 fs-4">Encuentra los mejores productos al mejor precio.</p>
+    <p class="text-uppercase mb-2" style="letter-spacing:0.2em; font-size:0.75rem; opacity:.65;">Tienda oficial · Streetwear</p>
+    <h1 class="mb-3">DISSONANCE</h1>
+    <p class="col-md-8 fs-4">Encuentra los mejores productos que se adaptan a tu estilo.</p>
     <a href="{{ url_for('public.tienda') }}" class="btn btn-primary btn-lg">
       Ver tienda
     </a>
