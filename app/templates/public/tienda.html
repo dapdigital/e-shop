@@ -48,8 +48,10 @@
       <div class="col">
         <div class="card h-100 shadow-sm">
           {% if p.imagen %}
-            <img src="{{ url_for('static', filename='img/' + p.imagen) }}"
-                 class="card-img-top" style="height:160px; object-fit:cover;">
+            <div class="product-thumb-wrap">
+              <img src="{{ url_for('static', filename='img/' + p.imagen) }}"
+                   alt="{{ p.nombre }}">
+            </div>
           {% else %}
             <div class="bg-light text-center py-4 text-muted">Sin imagen</div>
           {% endif %}

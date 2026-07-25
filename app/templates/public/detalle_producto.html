@@ -63,6 +63,21 @@
       <p class="text-danger fw-semibold">✖ Sin stock</p>
     {% endif %}
 
+    <!-- Selector de talla -->
+    <div class="mt-3">
+      <label class="form-label mb-1 d-block">Talla</label>
+      <div class="talla-selector" id="talla-selector">
+        <button type="button" class="talla-btn" data-talla="XS">XS</button>
+        <button type="button" class="talla-btn" data-talla="S">S</button>
+        <button type="button" class="talla-btn" data-talla="M">M</button>
+        <button type="button" class="talla-btn" data-talla="L">L</button>
+        <button type="button" class="talla-btn" data-talla="XL">XL</button>
+      </div>
+      <small class="text-danger d-none" id="talla-aviso">
+        Selecciona una talla antes de agregar al carrito.
+      </small>
+    </div>
+
     <!-- Descripción -->
     {% if producto.descripcion %}
       <p class="text-muted mt-3">{{ producto.descripcion }}</p>
@@ -73,7 +88,10 @@
     <!-- Formulario agregar al carrito -->
     {% if producto.tiene_stock() %}
       <form method="POST"
-            action="{{ url_for('public.agregar_carrito', id=producto.id) }}">
+            action="{{ url_for('public.agregar_carrito', id=producto.id) }}"
+            id="form-agregar-carrito">
+
+        <input type="hidden" name="talla" id="talla-input" value="">
 
         <div class="row align-items-center g-3">
 
@@ -128,10 +146,10 @@
     <div class="card h-100 shadow-sm">
 
       {% if r.imagen %}
-        <img src="{{ url_for('static', filename='img/' + r.imagen) }}"
-             class="card-img-top"
-             style="height: 160px; object-fit: cover;"
-             alt="{{ r.nombre }}">
+        <div class="product-thumb-wrap">
+          <img src="{{ url_for('static', filename='img/' + r.imagen) }}"
+               alt="{{ r.nombre }}">
+        </div>
       {% else %}
         <div class="bg-light text-center text-muted py-4">
           Sin imagen
@@ -191,5 +209,29 @@
     if (parseInt(input.value) < 1)     input.value = 1;
     if (parseInt(input.value) > stock) input.value = stock;
   });
+
+  // Selector de talla
+  const botonesTalla = document.querySelectorAll('.talla-btn');
+  const tallaInput   = document.getElementById('talla-input');
+  const tallaAviso   = document.getElementById('talla-aviso');
+  const formCarrito  = document.getElementById('form-agregar-carrito');
+
+  botonesTalla.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botonesTalla.forEach(b => b.classList.remove('activa'));
+      btn.classList.add('activa');
+      tallaInput.value = btn.dataset.talla;
+      tallaAviso.classList.add('d-none');
+    });
+  });
+
+  if (formCarrito) {
+    formCarrito.addEventListener('submit', (e) => {
+      if (!tallaInput.value) {
+        e.preventDefault();
+        tallaAviso.classList.remove('d-none');
+      }
+    });
+  }
 </script>
 {% endblock %}
