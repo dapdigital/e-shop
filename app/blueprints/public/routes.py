@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, session
 from flask_login import login_required, current_user
 from app import db
-from app.models import Producto, Categoria, Pedido, DetallePedido
+from app.models import Producto, Categoria, Pedido, DetallePedido, MensajeContacto
 from app.blueprints.public import public_bp
 
 
@@ -211,3 +211,30 @@ def mis_pedidos():
 @public_bp.route('/acerca-de')
 def acerca_de():
     return render_template('public/acerca_de.html')
+
+
+@public_bp.route('/contacto', methods=['GET', 'POST'])
+def contacto():
+    if request.method == 'POST':
+        nombre  = request.form.get('nombre', '').strip()
+        email   = request.form.get('email', '').strip()
+        asunto  = request.form.get('asunto', '').strip()
+        mensaje = request.form.get('mensaje', '').strip()
+
+        if not nombre or not email or not mensaje:
+            flash('Por favor completa los campos obligatorios.', 'danger')
+            return redirect(url_for('public.contacto'))
+
+        nuevo_mensaje = MensajeContacto(
+            nombre=nombre,
+            email=email,
+            asunto=asunto,
+            mensaje=mensaje
+        )
+        db.session.add(nuevo_mensaje)
+        db.session.commit()
+
+        flash('¡Gracias! Tu mensaje fue enviado, te responderemos pronto.', 'success')
+        return redirect(url_for('public.contacto'))
+
+    return render_template('public/contacto.html')

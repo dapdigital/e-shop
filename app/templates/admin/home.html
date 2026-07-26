@@ -97,6 +97,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">
+                        ✉️ Mensajes
+                        {% if mensajes_sin_leer %}
+                            <span class="badge bg-danger">{{ mensajes_sin_leer }}</span>
+                        {% endif %}
+                    </h5>
+                    <a href="{{ url_for('admin.gestion_mensajes') }}" class="btn btn-primary">Gestionar</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Mensajes de contacto{% endblock %}
+{% block content %}
+<h1>Mensajes de contacto</h1>
+
+<table class="table table-striped align-middle mt-3">
+    <thead>
+        <tr>
+            <th>Estado</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Asunto</th>
+            <th>Mensaje</th>
+            <th>Fecha</th>
+            <th class="text-end">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in mensajes %}
+        <tr>
+            <td>
+                {% if m.leido %}
+                    <span class="badge bg-secondary">Leído</span>
+                {% else %}
+                    <span class="badge bg-danger">Nuevo</span>
+                {% endif %}
+            </td>
+            <td>{{ m.nombre }}</td>
+            <td><a href="mailto:{{ m.email }}">{{ m.email }}</a></td>
+            <td>{{ m.asunto or '—' }}</td>
+            <td style="max-width: 320px; white-space: pre-wrap;">{{ m.mensaje }}</td>
+            <td><small class="text-muted">{{ m.fecha.strftime('%d/%m/%Y %H:%M') }}</small></td>
+            <td class="text-end">
+                <form action="{{ url_for('admin.marcar_mensaje_leido', id=m.id) }}"
+                      method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        {{ 'Marcar como nuevo' if m.leido else 'Marcar como leído' }}
+                    </button>
+                </form>
+                <form action="{{ url_for('admin.eliminar_mensaje', id=m.id) }}"
+                      method="POST" class="d-inline"
+                      onsubmit="return confirm('¿Eliminar este mensaje?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted">No hay mensajes todavía.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

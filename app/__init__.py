@@ -26,6 +26,7 @@ def create_app():
     from app.models import Categoria
     from app.models import Producto        
     from app.models import Pedido, DetallePedido 
+    from app.models import MensajeContacto
 
     #User loader; Flask-login necesita saber como cargar un usuario por ID
     @login_manager.user_loader

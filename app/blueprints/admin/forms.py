@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileSize
 from wtforms import StringField, BooleanField, SubmitField, DecimalField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, InputRequired
 
 
 class FormCategoria(FlaskForm):
@@ -26,7 +26,7 @@ class FormProducto(FlaskForm):
                 validators=[DataRequired()])
 
     stock = IntegerField('Stock',
-                validators=[DataRequired()])
+                validators=[InputRequired()])
 
     categoria_id = SelectField('Categoría', coerce=int, validators=[DataRequired()])
 

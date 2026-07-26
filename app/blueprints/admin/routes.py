@@ -5,7 +5,7 @@ from . import admin_bp
 from flask_login import login_required
 from .decorators import admin_requerido
 from app import db
-from app.models import Categoria, Usuario, Pedido, Producto
+from app.models import Categoria, Usuario, Pedido, Producto, MensajeContacto
 from .forms import FormCategoria, FormProducto
 
 
@@ -25,11 +25,14 @@ def dashboard():
         Producto.stock <= 5
     ).order_by(Producto.stock.asc()).all()
 
+    mensajes_sin_leer = MensajeContacto.query.filter_by(leido=False).count()
+
     return render_template('admin/home.html',
         total_ventas=total_ventas,
         total_pedidos=total_pedidos,
         pedidos_pendientes=pedidos_pendientes,
-        productos_bajo_stock=productos_bajo_stock
+        productos_bajo_stock=productos_bajo_stock,
+        mensajes_sin_leer=mensajes_sin_leer
     )
 
 
@@ -162,9 +165,9 @@ def crear_producto():
 
     if form.validate_on_submit():
         nombre_archivo = None
+        archivo = request.files.get('imagen')
 
-        if form.imagen.data:
-            archivo = form.imagen.data
+        if archivo and archivo.filename:
             nombre_archivo = secure_filename(archivo.filename)
             ruta_guardado = os.path.join(current_app.root_path, 'static', 'img', nombre_archivo)
             archivo.save(ruta_guardado)
@@ -195,8 +198,9 @@ def editar_producto(id):
     form.categoria_id.choices = [(c.id, c.nombre) for c in Categoria.query.filter_by(activa=True).all()]
 
     if form.validate_on_submit():
-        if form.imagen.data:
-            archivo = form.imagen.data
+        archivo = request.files.get('imagen')
+
+        if archivo and archivo.filename:
             nombre_archivo = secure_filename(archivo.filename)
             ruta_guardado = os.path.join(current_app.root_path, 'static', 'img', nombre_archivo)
             archivo.save(ruta_guardado)
@@ -224,3 +228,34 @@ def eliminar_producto(id):
     db.session.commit()
     flash('Producto desactivado.', 'warning')
     return redirect(url_for('admin.productos'))
+
+
+# ==================== MENSAJES DE CONTACTO ====================
+
+@admin_bp.route('/mensajes')
+@login_required
+@admin_requerido
+def gestion_mensajes():
+    mensajes = MensajeContacto.query.order_by(MensajeContacto.fecha.desc()).all()
+    return render_template('admin/mensajes/listar.html', mensajes=mensajes)
+
+
+@admin_bp.route('/mensajes/leido/<int:id>', methods=['POST'])
+@login_required
+@admin_requerido
+def marcar_mensaje_leido(id):
+    mensaje = MensajeContacto.query.get_or_404(id)
+    mensaje.leido = not mensaje.leido
+    db.session.commit()
+    return redirect(url_for('admin.gestion_mensajes'))
+
+
+@admin_bp.route('/mensajes/eliminar/<int:id>', methods=['POST'])
+@login_required
+@admin_requerido
+def eliminar_mensaje(id):
+    mensaje = MensajeContacto.query.get_or_404(id)
+    db.session.delete(mensaje)
+    db.session.commit()
+    flash('Mensaje eliminado.', 'info')
+    return redirect(url_for('admin.gestion_mensajes'))

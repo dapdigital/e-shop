@@ -48,10 +48,9 @@ h1 { font-weight: 700; }
 }
 
 .navbar-brand .brand-logo {
-    height: 26px;
+    height: 80px;
     width: auto;
     display: block;
-    filter: grayscale(1) contrast(1.1);
 }
 
 /* --- Navbar --- */
@@ -441,6 +440,73 @@ footer.e2k-footer a:hover {
     border-color: var(--ds-ink-soft);
 }
 
+/* --- Footer: grid de columnas --- */
+footer.e2k-footer .footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 2rem;
+    text-align: left;
+    padding-bottom: 2rem;
+}
+
+footer.e2k-footer .footer-title {
+    color: var(--ds-ink);
+    font-weight: 700;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.9rem;
+}
+
+footer.e2k-footer .footer-links {
+    display: flex;
+    flex-direction: column;
+}
+
+footer.e2k-footer .footer-links a {
+    border-bottom: none;
+    font-weight: 400;
+    color: var(--ds-ink-soft);
+    margin-bottom: 0.5rem;
+}
+
+footer.e2k-footer .footer-links a:hover {
+    color: var(--ds-ink);
+}
+
+footer.e2k-footer .footer-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--ds-line-strong) !important;
+    padding: 0.5rem 0.9rem;
+    color: var(--ds-ink);
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+footer.e2k-footer .footer-social:hover {
+    border-color: var(--ds-ink) !important;
+    background-color: var(--ds-muted-bg);
+    color: var(--ds-ink);
+}
+
+footer.e2k-footer .footer-bottom {
+    border-top: 1px solid var(--ds-line);
+    padding-top: 1.25rem;
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    footer.e2k-footer .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    footer.e2k-footer .footer-social {
+        margin: 0 auto;
+    }
+}
+
 /* --- Links --- */
 a { color: var(--ds-ink); text-decoration: underline; text-underline-offset: 2px; }
 a:hover { color: var(--ds-ink-soft); }
@@ -549,8 +615,9 @@ a:hover { color: var(--ds-ink-soft); }
 }
 
 .auth-brand {
-    background-color: var(--ds-ink);
-    color: var(--ds-bg);
+    background-color: var(--ds-muted-bg);
+    color: var(--ds-ink);
+    border-right: 1px solid var(--ds-line);
     flex: 0 0 42%;
     padding: 3rem;
     display: flex;
@@ -559,19 +626,18 @@ a:hover { color: var(--ds-ink-soft); }
 }
 
 .auth-brand .brand-logo-lg {
-    height: 28px;
-    width: auto;
+    height: 250px;
+    width: 250px;
     margin-bottom: 1.75rem;
-    filter: invert(1) grayscale(1);
 }
 
 .auth-brand h2 {
-    color: var(--ds-bg);
+    color: var(--ds-ink);
     font-size: 2rem;
 }
 
 .auth-brand p {
-    color: #b8b8b8;
+    color: var(--ds-ink-soft);
     font-weight: 400;
 }
 
