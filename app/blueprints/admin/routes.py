@@ -229,6 +229,125 @@ def eliminar_producto(id):
     flash('Producto desactivado.', 'warning')
     return redirect(url_for('admin.productos'))
 
+@admin_bp.route('/productos/importar', methods=['GET', 'POST'])
+@login_required
+@admin_requerido
+def importar_productos():
+    if request.method == 'POST':
+        archivo = request.files.get('archivo_csv')
+
+        if not archivo or not archivo.filename:
+            flash('Selecciona un archivo CSV o Excel.', 'danger')
+            return redirect(url_for('admin.importar_productos'))
+
+        nombre_archivo = archivo.filename.lower()
+        filas = []
+
+        if nombre_archivo.endswith('.xlsx'):
+            from openpyxl import load_workbook
+
+            try:
+                wb = load_workbook(archivo, data_only=True)
+                hoja = wb.active
+                encabezados = [str(c.value).strip().lower() if c.value else '' for c in hoja[1]]
+
+                for fila_excel in hoja.iter_rows(min_row=2, values_only=True):
+                    fila_dict = dict(zip(encabezados, fila_excel))
+                    filas.append(fila_dict)
+            except Exception:
+                flash('No se pudo leer el archivo Excel. Verifica que no esté dañado.', 'danger')
+                return redirect(url_for('admin.importar_productos'))
+
+        elif nombre_archivo.endswith('.csv'):
+            import csv, io
+
+            try:
+                contenido = archivo.stream.read().decode('utf-8-sig')
+            except UnicodeDecodeError:
+                flash('No se pudo leer el archivo. Guárdalo como CSV UTF-8 desde Excel.', 'danger')
+                return redirect(url_for('admin.importar_productos'))
+
+            lector = csv.DictReader(io.StringIO(contenido))
+            filas = list(lector)
+
+        else:
+            flash('El archivo debe ser .csv o .xlsx', 'danger')
+            return redirect(url_for('admin.importar_productos'))
+
+        columnas_esperadas = {'categoria', 'nombre', 'descripcion', 'precio', 'stock', 'imagen'}
+        if not filas or not columnas_esperadas.issubset(set(filas[0].keys())):
+            flash(f'El archivo debe tener las columnas: {", ".join(columnas_esperadas)}', 'danger')
+            return redirect(url_for('admin.importar_productos'))
+
+        creados = 0
+        actualizados = 0
+        categorias_nuevas = 0
+        errores = []
+
+        for i, fila in enumerate(filas, start=2):
+            nombre_cat = str(fila.get('categoria') or '').strip()
+            nombre_prod = str(fila.get('nombre') or '').strip()
+
+            if not nombre_cat or not nombre_prod:
+                errores.append(f'Fila {i}: falta categoría o nombre, se omitió.')
+                continue
+
+            try:
+                precio = float(fila.get('precio') or 0)
+                stock = int(float(fila.get('stock') or 0))
+            except (ValueError, TypeError):
+                errores.append(f'Fila {i}: precio o stock inválido, se omitió.')
+                continue
+
+            categoria = Categoria.query.filter(
+                db.func.lower(Categoria.nombre) == nombre_cat.lower()
+            ).first()
+
+            if not categoria:
+                categoria = Categoria(nombre=nombre_cat, activa=True)
+                db.session.add(categoria)
+                db.session.flush()
+                categorias_nuevas += 1
+
+            producto = Producto.query.filter(
+                db.func.lower(Producto.nombre) == nombre_prod.lower(),
+                Producto.categoria_id == categoria.id
+            ).first()
+
+            imagen = str(fila.get('imagen') or '').strip() or None
+            descripcion = str(fila.get('descripcion') or '').strip()
+
+            if producto:
+                producto.descripcion = descripcion
+                producto.precio = precio
+                producto.stock = stock
+                if imagen:
+                    producto.imagen = imagen
+                actualizados += 1
+            else:
+                nuevo = Producto(
+                    nombre=nombre_prod,
+                    descripcion=descripcion,
+                    precio=precio,
+                    stock=stock,
+                    imagen=imagen,
+                    categoria_id=categoria.id,
+                    activo=True
+                )
+                db.session.add(nuevo)
+                creados += 1
+
+        db.session.commit()
+
+        resumen = f'Importación completa: {creados} productos creados, {actualizados} actualizados, {categorias_nuevas} categorías nuevas.'
+        flash(resumen, 'success')
+        for err in errores:
+            flash(err, 'warning')
+
+        return redirect(url_for('admin.productos'))
+
+    return render_template('admin/productos/importar.html')
+
 
 # ==================== MENSAJES DE CONTACTO ====================
 
