@@ -11,15 +11,16 @@ pedidos, con un panel de administración.
 
 ## Requisitos previos
 - Python 3.10 o superior
-- pip
-- Git
-- MySQL o MariaDB
+- pip  
+- Git 
+- MySQL / MariaDB, corriendo local mente
 
 ## Tecnologías
-- Python + Flask
-- Flask-SQLAlchemy + Flask-Migrate (base de datos)
-- Flask-Login (autenticación) · Flask-WTF (formularios)
-- MySQL / MariaDB · Bootstrap 5
+- Python3 + Flask
+- Flask-SQLAlchemy + Flask-Migrate (ORM y migraciones de base de datos)
+- Flask-Login (autenticación) · Flask-WTF (formularios y validación de archivo)
+- MySQL / MariaDB 
+- Bootstrap 5 + CSS propio
 
 ## Instalación
 
@@ -33,11 +34,14 @@ cd e-shop
 ```bash
 python -m venv venv
 
-# En Windows:
-venv\Scripts\activate
+# En Windows (PowerShell):
+.venv\Scripts\Activate.ps1
+
+# En Windows (Git Bash):
+source .venv/Scripts/activate
 
 # En Linux/Mac:
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 ### 3. Instalar dependencias
@@ -64,10 +68,14 @@ DB_NAME=ecommerce_db
    ```
 ### 6. Aplicar las migraciones
 ```bash
+set FLASK_APP=run.py # En Linux/Mac: export FLASK_APP=run.py
 flask db upgrade
+```
+### 7. Cargar usuarios de prueba
+```bash
 python seed.py
 ```
-### 7. Ejecutar el proyecto
+### 8. Ejecutar el proyecto
 ```bash
 python run.py
 ```
@@ -84,17 +92,34 @@ e-shop/
 ├── app.py
 ├── run.py
 ├── seed.py
+├── borrar_categorias.py
 ├── README.md
 ├── requirements.txt
+├── .env.example
 ├── app/
 │   ├── __init__.py
 │   ├── config.py
+│   ├── data_productos.py        # catálogo fuente (categorías + productos)
 │   ├── blueprints/
-│   ├── models/
+│   │   ├── public/              # tienda, acerca de, contacto
+│   │   ├── auth/                # login / registro
+│   │   └── admin/                # panel de administración
+│   ├── models/                  # Usuario, Categoria, Producto, Pedido...
+│   ├── utils/
+│   │   └── importar_excel.py    # sincronización automática del catálogo
 │   ├── static/
+│   │   ├── css/style.css
+│   │   └── img/                 # imágenes de productos
 │   └── templates/
 └── migrations/
     ├── alembic.ini
     ├── env.py
-    └── script.py
+    └── versions/
 ```
+## Rutina diaria (después de la primera instalación)
+```bash
+git pull
+pip install -r requirements.txt
+flask db upgrade
+python run.py
+ ```
