@@ -44,8 +44,11 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix='/admin')
     import os
     if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-        from app.utils.importar_excel import sincronizar_productos_desde_excel
         with app.app_context():
+            from app.utils.limpiar_categorias import eliminar_categorias_de_prueba
+            eliminar_categorias_de_prueba(app, db)
+
+            from app.utils.importar_excel import sincronizar_productos_desde_excel
             sincronizar_productos_desde_excel(app, db)
 
     return app
