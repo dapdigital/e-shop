@@ -13,6 +13,13 @@ pedidos, con un panel de administración.
 - Python 3.10 o superior
 - pip
 - Git
+- MySQL o MariaDB
+
+## Tecnologías
+- Python + Flask
+- Flask-SQLAlchemy + Flask-Migrate (base de datos)
+- Flask-Login (autenticación) · Flask-WTF (formularios)
+- MySQL / MariaDB · Bootstrap 5
 
 ## Instalación
 
@@ -48,18 +55,27 @@ DB_PASSWORD=
 DB_HOST=localhost
 DB_NAME=ecommerce_db
 ```
-### 5. Inicializar la base de datos
+### 5. Crear Base de Datos
+   ```sql
+   CREATE DATABASE ecommerce_db;
+   CREATE USER 'ecommerce_user'@'localhost' IDENTIFIED BY '123456';
+   GRANT ALL PRIVILEGES ON ecommerce_db.* TO 'ecommerce_user'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
+### 6. Aplicar las migraciones
 ```bash
 flask db upgrade
 python seed.py
 ```
-
-### 6. Ejecutar el proyecto
+### 7. Ejecutar el proyecto
 ```bash
 python run.py
 ```
 La aplicación estará disponible en `http://127.0.0.1:5000`
- 
+
+## Usuarios de prueba (seed)
+- **Admin:** admin@tienda.com / admin123
+- **Cliente:** juan@email.com / cliente123 
 
 ## Estructura del proyecto
 ```
@@ -80,5 +96,5 @@ e-shop/
 └── migrations/
     ├── alembic.ini
     ├── env.py
-    └── script.py.mako
+    └── script.py
 ```
