@@ -11,3 +11,6 @@ class Config:
         f"@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # DEBUG se apaga automáticamente cuando FLASK_ENV=production
+    DEBUG = os.getenv('FLASK_ENV', 'development') != 'production'

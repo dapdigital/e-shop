@@ -1,6 +1,29 @@
+# Entornos virtuales
 .venv/
+venv/
+env/
+ENV/
+
+# Variables de entorno (nunca subir credenciales)
 .env
 .env.save
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+
+# Bases de datos locales / instance
 instance/
+*.sqlite3
+*.db
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
